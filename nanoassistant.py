@@ -2,9 +2,9 @@ import openai
 import sounddevice as sd
 import numpy as np
 from scipy.io import wavfile
-import tempfile2
+import tempfile
 import pyttsx3
-
+import streamlit as st
 
 class VoiceAssistant:
     """
@@ -20,7 +20,7 @@ class VoiceAssistant:
     """
     def __init__(self):
         # Set your OpenAI API key
-        openai.api_key = ""
+        openai.api_key = "YOUR_OPENAI_API_KEY"
         # Initialize the assistant's history
         self.history = [
                 {"role": "system", "content": "You are a helpful assistant. The user is english. Only speak english."}
@@ -30,9 +30,9 @@ class VoiceAssistant:
         """
         Records audio from the user and transcribes it.
         """
-        print("Listening...")
+        st.write("Listening...")
         # Record the audio
-        duration = 3  # Record for 3 seconds
+        duration = 5  # Record for 5 seconds
         fs = 44100  # Sample rate
 
         audio = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype=np.int16)
@@ -43,9 +43,9 @@ class VoiceAssistant:
             wavfile.write(temp_wav_file.name, fs, audio)
 
             # Use the temporary wav file in the OpenAI API
-            transcript = openai.Audio.transcribe("whisper-1", temp_wav_file)
+            transcript = openai.Audio.transcribe("whisper-1", temp_wav_file.name)
 
-        print(f"User: {transcript['text']}")
+        st.write(f"User: {transcript['text']}")
         return transcript['text']
 
     def think(self, text):
@@ -63,11 +63,11 @@ class VoiceAssistant:
         # Extract the assistant's response from the API response
         message = dict(response.choices[0])['message']['content']
         self.history.append({"role": "system", "content": message})
-        print('Assistant: ', message)
+        st.write(f"Assistant: {message}")
         return message
 
     def speak(self, text):
-        """"
+        """
         Converts text to speech and plays it.
         """
         # Initialize the speech engine
@@ -80,16 +80,22 @@ class VoiceAssistant:
         engine.runAndWait()
 
 
-if __name__ == "__main__":
+# Streamlit Interface
+def run_assistant():
+    st.title("Voice Assistant")
+
     assistant = VoiceAssistant()
 
-    while True:
+    # Create a button to start listening
+    if st.button("Start Listening"):
         text = assistant.listen()
 
         if "goodbye" in text.strip().lower():
-            print("Assistant: Goodbye! Have a great day!")
+            st.write("Assistant: Goodbye! Have a great day!")
             assistant.speak("Goodbye! Have a great day!")
-            break
+        else:
+            response = assistant.think(text)
+            assistant.speak(response)
 
-        response = assistant.think(text)
-        assistant.speak(response)
+if __name__ == "__main__":
+    run_assistant()
