@@ -1,6 +1,9 @@
+streamlit
 openai
 sounddevice 
 numpy
 scipy
 tempfile
 pyttsx
+
+
