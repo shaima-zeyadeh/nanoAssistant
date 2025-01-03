@@ -8,7 +8,7 @@ pyttsx3
 wavfile
 pyaudio
 !pip install pyaudio
-!conda install -c conda-forge sounddevice
+conda install -c conda-forge sounddevice
 
 
 
