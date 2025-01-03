@@ -2,8 +2,10 @@ import openai
 import sounddevice as sd
 import numpy as np
 from scipy.io import wavfile
-import tempfile
+import tempfile2
 import pyttsx3
+
+
 class VoiceAssistant:
     """
     This class represents a voice assistant.
