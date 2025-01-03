@@ -3,7 +3,9 @@ openai
 sounddevice 
 numpy
 scipy
-tempfile
-pyttsx
+tempfile2
+pyttsx3
+wavfile
+
 
 
