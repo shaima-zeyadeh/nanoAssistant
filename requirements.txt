@@ -1,12 +1,10 @@
+openai 
+sounddevice 
+numpy 
+scipy 
+pyttsx3 
 streamlit
-openai
-sounddevice
-numpy
-scipy
-tempfile2
-pyttsx3
-wavfile
-pyaudio
+
 
 
 
